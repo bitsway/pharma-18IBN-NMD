@@ -12287,14 +12287,18 @@ function bvSubmit() {
 function page_chemist_cancel() {	
 	$(".market").html(localStorage.visit_market_show);
 	$(".visit_client").html(localStorage.visit_client_show);
+	$("#error_chemist_cancel_page").html('');
+	$("#wait_image_dRemove").hide();
 	$.afui.loadContent("#page_chemist_cancel",true,true,'right');
 }
 function chemist_cancelSubmit() {	
 	
 	var marketId=(localStorage.visit_market_show).split('|')[1]
 	var visit_client=(localStorage.visit_client_show).split('|')[1]
+	var visit_clientName=(localStorage.visit_client_show).split('|')[0]
 	var inactive_reason=$("#inactive_reason").val();
-	
+	$("#btn_image_dRemove").hide();
+	$("#wait_image_dRemove").show();
 		// ajax-------
 
 		//alert (localStorage.base_url+'chemist_cancelSubmit?cid='+localStorage.cid+'&rep_id='+localStorage.user_id+'&rep_pass='+localStorage.user_pass+'&synccode='+localStorage.synccode+'&market_id='+marketId+'&visit_client='+visit_client+'&inactive_reason='+inactive_reason);
@@ -12302,8 +12306,10 @@ function chemist_cancelSubmit() {
 		// ajax-------
 				$.ajax({
 					 type: 'POST',
-					 url: localStorage.base_url+'chemist_cancelSubmit?cid='+localStorage.cid+'&rep_id='+localStorage.user_id+'&rep_pass='+localStorage.user_pass+'&synccode='+localStorage.synccode+'&market_id='+marketId+'&visit_client='+visit_client+'&inactive_reason='+inactive_reason,
+					 url: localStorage.base_url+'chemist_cancelSubmit?cid='+localStorage.cid+'&rep_id='+localStorage.user_id+'&rep_pass='+localStorage.user_pass+'&synccode='+localStorage.synccode+'&market_id='+marketId+'&visit_client='+visit_client+'&inactive_reason='+inactive_reason+'&visit_clientName='+visit_clientName,
 					 success: function(result) {
+						 $("#btn_image_dRemove").show();
+								$("#wait_image_dRemove").hide();
 							if (result==''){
 								$("#error_chemist_cancel_page").html('Sorry Network not available');
 							}else{					
@@ -12320,7 +12326,9 @@ function chemist_cancelSubmit() {
 									}
 							}
 						  },
-					  error: function(result) {			  
+					  error: function(result) {	
+					  		$("#btn_image_dRemove").show();
+							$("#wait_image_dRemove").hide();		  
 						  $("#error_chemist_cancel_page").html('Network Timeout. Please try again.');		
 					  }
 				 });//end ajax
